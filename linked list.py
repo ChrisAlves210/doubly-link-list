@@ -27,3 +27,46 @@ class DoublyLinkedList:
             print(current.value, end=" <-> ")
             current = current.next
         print("None")
+
+    def print_backward(self):
+        current = self.tail
+        while current:
+            print(current.value, end=" <-> ")
+            current = current.prev
+        print("None")
+
+    def find(self, value):
+        current = self.head
+        while current:
+            if current.value == value:
+                return current
+            current = current.next
+        return None
+
+    def delete(self, value):
+        node_to_delete = self.find(value)
+        if not node_to_delete:
+            return False
+        if node_to_delete.prev:
+            node_to_delete.prev.next = node_to_delete.next
+        else:
+            self.head = node_to_delete.next
+        if node_to_delete.next:
+            node_to_delete.next.prev = node_to_delete.prev
+        else:
+            self.tail = node_to_delete.prev
+        return True
+
+    def insert_after(self, target_value, new_value):
+        target_node = self.find(target_value)
+        if not target_node:
+            return False
+        new_node = Node(new_value)
+        new_node.prev = target_node
+        new_node.next = target_node.next
+        if target_node.next:
+            target_node.next.prev = new_node
+        else:
+            self.tail = new_node
+        target_node.next = new_node
+        return True
